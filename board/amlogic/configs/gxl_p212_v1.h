@@ -65,6 +65,7 @@
    That is used for recovery and the bootloader to talk to each other
   */
 #define CONFIG_BOOTLOADER_CONTROL_BLOCK
+#define CONFIG_CMD_LOADB 1
 
 /*a/b update */
 #define CONFIG_CMD_BOOTCTOL_AVB

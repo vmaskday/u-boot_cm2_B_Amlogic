@@ -286,7 +286,7 @@ static int usb_hub_configure(struct usb_device *dev)
 	short hubCharacteristics;
 	struct usb_hub_descriptor *descriptor;
 	struct usb_hub_device *hub;
-	__maybe_unused struct usb_hub_status *hubsts;
+	__maybe_unused struct usb_hub_status *hubsts = NULL;
 
 	/* "allocate" Hub device */
 	hub = usb_hub_allocate();
@@ -386,7 +386,6 @@ static int usb_hub_configure(struct usb_device *dev)
 
 #ifdef DEBUG
 	hubsts = (struct usb_hub_status *)buffer;
-#endif
 
 	debug("get_hub_status returned status %X, change %X\n",
 	      le16_to_cpu(hubsts->wHubStatus),
@@ -397,6 +396,7 @@ static int usb_hub_configure(struct usb_device *dev)
 	debug("%sover-current condition exists\n",
 	      (le16_to_cpu(hubsts->wHubStatus) & HUB_STATUS_OVERCURRENT) ? \
 	      "" : "no ");
+#endif
 	usb_hub_power_on(hub);
 
 	/*

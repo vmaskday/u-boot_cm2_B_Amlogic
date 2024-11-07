@@ -362,6 +362,6 @@ obj-y += cmd_tee_log_level.o
 obj-y += cmd_avb.o
 
 # khadas commands
-obj-$(CONFIG_KHADAS_KBI) += cmd_kbi.o
+obj-y += cmd_kbi.o
 
 CFLAGS_env_embedded.o := -Wa,--no-warn -DENV_CRC=$(shell tools/envcrc 2>/dev/null)

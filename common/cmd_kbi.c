@@ -345,12 +345,11 @@ static const char *hw_version_str(int hw_ver)
 
 static int get_hw_version(void)
 {
-	int val = 0;
-	int hw_ver = 0;
+	int hw_ver = 0, val = 0;
 
 	saradc_enable();
 	udelay(100);
-
+#if 0
 	val = get_adc_sample_gxbb(1);
 	if (get_cpu_id().family_id == MESON_CPU_MAJOR_ID_GXM) {
 		if ((val >= HW_VERSION_ADC_VAL_VIM2_V12 - HW_VERSION_ADC_VALUE_TOLERANCE) && (val <= HW_VERSION_ADC_VAL_VIM2_V12 + HW_VERSION_ADC_VALUE_TOLERANCE)) {
@@ -380,12 +379,12 @@ static int get_hw_version(void)
 			hw_ver = HW_VERSION_VIM3_V14;
 		}
 	}
-	printf("saradc: 0x%x, hw_ver: 0x%x (%s)\n", val, hw_ver, hw_version_str(hw_ver));
-
-	setenv("hwver", hw_version_str(hw_ver));
-
 	saradc_disable();
-
+    #else
+    hw_ver = HW_VERSION_VIM1_V14;
+    #endif
+	printf("saradc: 0x%x, hw_ver: 0x%x (%s)\n", val, hw_ver, hw_version_str(hw_ver));
+	setenv("hwver", hw_version_str(hw_ver));
 	return 0;
 }
 
@@ -1174,6 +1173,7 @@ static int do_kbi(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 
 #ifdef CONFIG_KHADAS_VIM
 	int hw_ver = 0;
+    #if 0
 	int val = 0;
 	saradc_enable();
 	udelay(100);
@@ -1193,6 +1193,10 @@ static int do_kbi(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 		}
 	}
 	saradc_disable();
+    #else
+    hw_ver = HW_VERSION_VIM1_V14;
+    setenv("hwver", hw_version_str(hw_ver));
+    #endif // if 0
 #endif
 
 	if (argc < 2)
